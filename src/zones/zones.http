@@ -1,0 +1,32 @@
+@base = https://zone-mapping-back-end.onrender.com
+@id = yoWevqvijwbvA6hDy8FbD
+
+### Listar todas as zonas
+GET {{base}}/zones
+
+### Buscar uma zona pelo ID
+GET {{base}}/zones/{{id}}
+
+### Criar uma nova zona (exemplo com GeoJSON convertido para string JSON)
+POST {{base}}/zones
+Content-Type: application/json
+
+{
+    "name":"Zona 1",
+    "type":"Residencial",
+    "createdAt":"2025-11-27T01:39:13.881Z",
+    "geometry":
+    {"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[-37.920685,-12.279289],[-37.920685,-12.272244],[-37.914848,-12.272244],[-37.914848,-12.279289],[-37.920685,-12.279289]]]}}}
+
+### Atualizar uma zona (PATCH)
+PATCH {{base}}/zones/{{id}}
+Content-Type: application/json
+
+{
+    "name": "Zona Atualizada",
+    "type": "Comercial",
+    "createdAt": "2025-02-01"
+}
+
+### Deletar uma zona
+DELETE {{base}}/zones/{{id}}

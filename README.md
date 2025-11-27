@@ -1,98 +1,120 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🗺️ Zone Mapping App --- Full Stack (Frontend + Backend)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Plataforma para **criação, visualização e gerenciamento de zonas
+geográficas no mapa**, com armazenamento de geometria em **GeoJSON
+(Polygon/MultiPolygon)** e operações **CRUD** via API.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+------------------------------------------------------------------------
 
-## Description
+## ✨ Funcionalidades
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+-   Criação de zonas desenhando diretamente no mapa
+-   Armazenamento da geometria em **GeoJSON**
+-   **CRUD completo** (Create, Read, Update, Delete) via backend
+-   Configuração via **variáveis de ambiente (.env)**
+-   Persistência relacional no banco de dados (**SQLite**)
+-   Interface modal para nome e tipo da zona
+-   Controle de visibilidade das zonas na UI
 
-## Project setup
+------------------------------------------------------------------------
 
-```bash
-$ npm install
+## 🧰 Stack Tecnológica
+
+### 🎨 Frontend
+
+-   **React (Vite)**
+-   Axios
+-   Leaflet + Leaflet‑Draw
+-   Context API para gerenciamento de estado
+
+### 🏗️ Backend
+
+-   **NestJS**
+-   SQLite
+-   ORM com suporte JSON para GeoJSON (TypeORM)
+-   Swagger para documentação 
+
+------------------------------------------------------------------------
+
+## 🧠 Modelo da entidade `Zone`
+
+``` json
+{
+  "id": 1,
+  "name": "Zona Residencial Norte",
+  "type": "Residencial",
+  "geometry": { "type": "Polygon", "coordinates": [...] },
+  "createdAt": "2025‑11‑27T17:40:00.000Z"
+}
 ```
 
-## Compile and run the project
+------------------------------------------------------------------------
 
-```bash
-# development
-$ npm run start
+## 🔐 Variáveis de Ambiente
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
+Frontend (React + Vite), crie o `.env`:
+
+``` env
+VITE_API_URL=http://localhost:3000
+VITE_MAP_CENTER=[‑22.5, ‑45.5]
+VITE_MAP_ZOOM=13
 ```
 
-## Run tests
+> **Importante:** variáveis do frontend devem começar com `VITE_`.
 
-```bash
-# unit tests
-$ npm run test
+------------------------------------------------------------------------
 
-# e2e tests
-$ npm run test:e2e
+## ▶️ Executando a Aplicação Localmente
 
-# test coverage
-$ npm run test:cov
+### 📦 Instalar dependências
+
+``` bash
+npm install
 ```
 
-## Deployment
+### ▶️ Iniciar backend
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+``` bash
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### ▶️ Iniciar frontend
 
-## Resources
+``` bash
+cd front_end
+npm install
+npm run dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+Acesse no navegador: - **Frontend:** `http://localhost:5173` - **API:**
+`http://localhost:3000/zones`
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+------------------------------------------------------------------------
 
-## Support
+## 🌐 Acesso ao Projeto Online
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+-   **Aplicação:** `https://zone-mapping-front-end-jrqm.vercel.app/`
+-   **API:** `https://zone-mapping-back-end.onrender.com/`
+-   **Docs (Swagger):** `https://zone-mapping-back-end.onrender.com/docs`
 
-## Stay in touch
+------------------------------------------------------------------------
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📡 Endpoints Principais da API
 
-## License
+  Método     Rota           Descrição
+  ---------- -------------- -----------------
+  `POST`     `/zones`       Criar nova zona
+  `GET`      `/zones`       Listar zonas
+  `GET`      `/zones/:id`   Buscar por ID
+  `PATCH`    `/zones/:id`   Atualizar zona
+  `DELETE`   `/zones/:id`   Excluir zona
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+------------------------------------------------------------------------
+
+## 🧑‍💻 Autor
+
+**Francisco Guimarães**\
+Desenvolvedor Full Stack
+Email: (franciscop.guimaraes04@gmail.com)

@@ -9,19 +9,39 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class ZonesService {
   constructor(
     @InjectRepository(Zone)
-    private readonly repository: Repository<Zone>) { }
+    private readonly repository: Repository<Zone>
+  ) { }
 
   create(dto: CreateZoneDto) {
-    const zone = this.repository.create(dto);
+    const geometry = typeof dto.geometry === 'object' ? JSON.stringify(dto.geometry) : dto.geometry;
+    const createdAt = dto.createdAt ?? new Date().toISOString();
+
+    const zone = this.repository.create({
+      ...dto,
+      geometry,
+      createdAt,
+    });
+
     return this.repository.save(zone);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll() {
+    const zones = await this.repository.find();
+
+    return zones.map((z) => ({
+      ...z,
+      geometry: this.safeParseJSON(z.geometry),
+    }));
   }
 
-  findOne(id: string) {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string) {
+    const zone = await this.repository.findOneBy({ id });
+    if (!zone) return null;
+
+    return {
+      ...zone,
+      geometry: this.safeParseJSON(zone.geometry),
+    };
   }
 
   async update(id: string, dto: UpdateZoneDto) {
@@ -30,8 +50,17 @@ export class ZonesService {
       return null;
     }
 
-    this.repository.merge(zone, dto);
-    return this.repository.save(zone);
+    const geometry = dto.geometry && typeof dto.geometry === 'object' ? JSON.stringify(dto.geometry) : zone.geometry;
+
+    this.repository.merge(zone, {
+      ...dto,
+      geometry,
+    });
+
+    return this.repository.save({
+      ...zone,
+      geometry: this.safeParseJSON(zone.geometry),
+    });
   }
 
   async remove(id: string) {
@@ -41,5 +70,13 @@ export class ZonesService {
     }
 
     return this.repository.remove(zone);
+  }
+
+  private safeParseJSON(value: string) {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
   }
 }

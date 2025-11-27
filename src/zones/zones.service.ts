@@ -22,7 +22,10 @@ export class ZonesService {
       createdAt,
     });
 
-    return this.repository.save(zone);
+    return this.repository.save(zone).then(saved => ({
+      ...saved,
+      geometry: this.safeParseJSON(saved.geometry),
+    }));
   }
 
   async findAll() {
